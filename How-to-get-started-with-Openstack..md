@@ -123,16 +123,17 @@ Next we will install the CLI clients. on most systems you can use "pip" for this
 
 run the following commands on the Ubuntu box to get everything started.
 
-`
-sudo apt update
 
-sudo apt upgrade
+`sudo apt update`
 
-sudo apt install python3-pip
+`sudo apt upgrade`
 
-sudo pip3 install python-openstackclient
+`sudo apt install python3-pip`
 
-`
+`sudo pip3 install python-openstackclient`
+
+
+
 
 Once installed every time you log in to SSH you need to run `source ~/<projectname>-openrc.sh` It should ask for your password and return you to the command line. This will keep you logged in until you close the SSH connection.
 
