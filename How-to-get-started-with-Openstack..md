@@ -111,6 +111,20 @@ Here is a example of logging in using Windows and the downloaded private key.
 
 _**All examples below are using Ubuntu 22.04**_
 
+First, we need to download and copy over our _**openrc**_ file. This file contains all the details for the openstack cli to connect to our instance.
+
+Go to "API Access" and select Download OpenStack RC File, Then select "OpenStack RC File". This will then download a file like `<projectname>-openrc.sh`. 
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/openrc-1.png)
+
+Upload this file to your Ubuntu VM you created before. You can use SCP, or even just copy and paste it into a new file on the VM over SSH. A example SCP command `scp -i .\Downloads\example-key.pem .\Downloads\cyberadmin-openrc.sh ubuntu@129.21.249.113:/home/ubuntu/`
+
+
+
+
+
+
+
 
 
 
