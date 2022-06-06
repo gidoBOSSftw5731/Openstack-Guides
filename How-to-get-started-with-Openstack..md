@@ -86,11 +86,14 @@ Then you will want to create a floating IP if you don't have one already. To do 
 
 You will be greeted with selecting the Pool, Set it to "external249" and give it a friendly description. Once completed. Click Allocate IP.
 
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-3.png)
+
 You should now have your new IP selected under IP Address. Go ahead and click "Associate".
 
 You will now note that the public IP is listed in the instances list now.
 
-![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-3.png)
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-4.png)
+
 
 
 
