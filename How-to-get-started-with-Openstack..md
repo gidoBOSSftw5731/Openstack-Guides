@@ -70,6 +70,35 @@ Once completed. Your rules should look like this:
 ![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/secgroups-3.png)
 
 
+### Floating IPs / Public IPs
+
+To get a Public IP for your VM you should have the quota for a Floating IP. These do 1:1 NAT to the VM you have select. They require a Router to work and only work on ONE hop (One Router in between the public internet and the VM) For the default MAIN-NAT this is the case.
+
+You can change what VM your IP goes to at any time.
+
+First go to Compute, Instances, then the dropdown arrow and select "Floating IP Associations"
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-1.png)
+
+Then you will want to create a floating IP if you don't have one already. To do this. Click the PLUS Icon next to IP Address.
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-2.png)
+
+You will be greeted with selecting the Pool, Set it to "external249" and give it a friendly description. Once completed. Click Allocate IP.
+
+You should now have your new IP selected under IP Address. Go ahead and click "Associate".
+
+You will now note that the public IP is listed in the instances list now.
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-3.png)
+
+
+
+
+
+
+
+
 
 
 
