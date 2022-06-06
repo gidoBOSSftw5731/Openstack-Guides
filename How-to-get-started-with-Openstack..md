@@ -95,6 +95,23 @@ You will now note that the public IP is listed in the instances list now.
 ![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/floatingip-4.png)
 
 
+### SSH to your new instance. 
+
+Taking that PEM file provided before as your SSH private key. you should be able to log into your ubuntu VM now!
+
+give it a try. you will need a command like `ssh -i example-key.pem ubuntu@<FLOATINGIP>`
+
+It may complain that your SSH key is insecure. to fix this do `chmod 700 example-key.pem`
+
+Here is a example of logging in using Windows and the downloaded private key.
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/ssh-1.png)
+
+### Getting the Openstack CLI
+
+_**All examples below are using Ubuntu 22.04**_
+
+
 
 
 
