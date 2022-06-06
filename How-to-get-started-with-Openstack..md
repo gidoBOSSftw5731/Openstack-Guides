@@ -119,9 +119,21 @@ Go to "API Access" and select Download OpenStack RC File, Then select "OpenStack
 
 Upload this file to your Ubuntu VM you created before. You can use SCP, or even just copy and paste it into a new file on the VM over SSH. A example SCP command `scp -i .\Downloads\example-key.pem .\Downloads\cyberadmin-openrc.sh ubuntu@129.21.249.113:/home/ubuntu/`
 
+Next we will install the CLI clients. on most systems you can use "pip" for this.
+
+run the following commands on the Ubuntu box to get everything started.
+
+`
+sudo apt update
+sudo apt upgrade
+sudo apt install python3-pip
+sudo pip3 install 
+`
+
+Once installed every time you log in to SSH you need to run `source ~/<projectname>-openrc.sh` It should ask for your password and return you to the command line. This will keep you logged in until you close the SSH connection.
 
 
-
+For details on how to use the CLI, Please see the Docs: [python-openstackclient](https://docs.openstack.org/python-openstackclient/latest/cli/index.html)
 
 
 
