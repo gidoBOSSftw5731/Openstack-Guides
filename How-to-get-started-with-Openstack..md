@@ -49,6 +49,31 @@ Once Completed the _Launch Instance_ button should be able to be clicked and you
 You will see it listed on the instances page with its details. Click on the Instance Name to see more details about the instance.
 
 
+### VM Firewall and Security Groups
+
+To be able to SSH into your VM, we will need to open the firewall up in openstack
+
+First, Select _Network_, Then _Security Groups_. Then _Manage Rules_ for the "Default" Security Group.
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/secgroups-1.png)
+
+This will change the main firewall rule that all future VMs will be spawned under unless changed at the time of the instance creation.
+
+We are going to allow all SSH Traffic inbound to the VM. To do this Click "_Add Rule_" to get started.
+
+Select the Rule "Custom TCP Rule", Then put a Description, Select the Direction of "Ingress", Select Open Port "Port", Type Port "22", Remote should be "CIDR" and CIDR should be "0.0.0.0/0" (To allow the whole internet to access it, You can also put your IP/32 in there as well to lock it down.
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/secgroups-2.png)
+
+Once completed. Your rules should look like this:
+
+![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/secgroups-3.png)
+
+
+
+
+
+
 
 
 
