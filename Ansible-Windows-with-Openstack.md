@@ -77,4 +77,6 @@ Here is a example script in Ansible to create three servers, make sure to "sourc
         - server3
 ```
 
-If you want to attach your openstack-toolbox to the corp network, you can run the command ` openstack server add fixed ip openstack-toolbox corp `
+If you want to attach your openstack-toolbox to the corp network, you can run the command 
+
+` openstack server add fixed ip openstack-toolbox corp `
