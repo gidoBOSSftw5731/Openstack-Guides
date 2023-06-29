@@ -8,3 +8,70 @@ Details of this command:
 * --key-name is the key-pair you have in openstack that you use in linux
 
 Create a jump box into the network and use it to deploy to your local windows machines. The username and password the script created is called `ansible`
+
+
+Here is a example script in Ansible to create three servers, make sure to "source openrc.sh" file to login first
+
+
+`---`
+`- name: Create servers on OpenStack and setup domain controller`
+  `hosts: localhost`
+  `gather_facts: no`
+  `vars:`
+    `server_image: WinSrv2022-20348-2022`
+    `server_flavor: large`
+    `network_name: corp`
+    `subnet_name: corp_subnet`
+    `subnet_cidr: 10.0.0.0/24`
+    `key_name: demo-key`
+    `security_groups_name: default`
+    `auto_ip: no`
+    `userdata_file: prepare-for-ansible-windows`
+    `existing_server: openstack-toolbox`
+    `router_name: corp_router`
+    `static_ips:`
+      `server1: 10.0.0.10`
+      `server2: 10.0.0.11`
+      `server3: 10.0.0.12`
+
+  `tasks:`
+    `- name: Load user data`
+      `set_fact:`
+        `user_data: "{{ lookup('file', userdata_file) }}"`
+
+    `- name: Create network`
+      `os_network:`
+        `name: "{{ network_name }}"`
+        `state: present`
+
+    `- name: Create subnet`
+      `os_subnet:`
+        `state: present`
+        `network_name: "{{ network_name }}"`
+        `name: "{{ subnet_name }}"`
+        `cidr: "{{ subnet_cidr }}"`
+
+    `- name: Create router`
+      `os_router:`
+        `state: present`
+        `name: "{{ router_name }}"`
+        `external_gateway_info:`
+           `network: "external249"`
+
+    `- name: Create servers`
+      `os_server:`
+        `state: present`
+        `name: "{{ item }}"`
+        `image: "{{ server_image }}"`
+        `flavor: "{{ server_flavor }}"`
+        `nics:`
+          `- net-name: "{{ network_name }}"`
+            `v4-fixed-ip: "{{ static_ips[item] }}"`
+        `key_name: "{{ key_name }}"`
+        `security_groups: "{{ security_groups_name }}"`
+        `auto_ip: "{{ auto_ip }}"`
+        `userdata: "{{ user_data }}"`
+      `loop:`
+        `- server1`
+        `- server2`
+        `- server3`
