@@ -61,7 +61,7 @@ This will change the main firewall rule that all future VMs will be spawned unde
 
 We are going to allow all SSH Traffic inbound to the VM. To do this Click "_Add Rule_" to get started.
 
-Select the Rule "Custom TCP Rule", Then put a Description, Select the Direction of "Ingress", Select Open Port "Port", Type Port "22", Remote should be "CIDR" and CIDR should be "0.0.0.0/0" (To allow the whole internet to access it, You can also put your IP/32 in there as well to lock it down.
+Select the Rule "Custom TCP Rule", Then put a Description, Select the Direction of "Ingress", Select Open Port "Port", Type Port "22", Remote should be "CIDR" and CIDR should be "129.21.0.0/16" (To allow the only RIT IPs to access it, You can also put your IP/32 in there as well to lock it down.)
 
 ![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/secgroups-2.png)
 
