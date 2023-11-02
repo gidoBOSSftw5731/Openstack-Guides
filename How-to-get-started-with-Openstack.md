@@ -107,6 +107,74 @@ Here is a example of logging in using Windows and the downloaded private key.
 
 ![](https://raw.githubusercontent.com/RIT-GCI-CyberRange/Openstack-Guides/main/guide-images/ssh-1.png)
 
+### Using the SSHJumpHost to SSH to your instance without a floating IP
+
+As the Cyber Range has a limited number of public IPv4 addresses, it is not practical to assign a public address to every machine in a project. To mitigate this issue, we have created a SSH Jump Box that allows you to SSH to your instances without a public IP address.
+
+In order to use the SSH Jump Box, you must first add your public SSH keys to Openstack as detailed above. After this has been done, visit https://people.rit.edu/~fffics/ and click the "Sync SSHJump Keys" button. This will add your public keys to the SSH Jump Box.
+
+Next, attach your machine to the `SSHJumpNet` network. This network does not have a default gateway or internet. SSHJump lives at `100.65.1.1`.
+ It is not a given that your machine will gain an IP address automatically via DHCP on a secondary network, so it may be required to either set `SSHJumpNet` as your default/primary network interface or manually assign an IP address to the interface (e.g. using cloud-init to run `ip a add 100.65.x.x/16`.)
+
+Once your machine has an IP address on `SSHJumpNet`, you can SSH to your instance using the following command:
+
+ssh -J <ritusername>@ssh.cyberrange.rit.edu <sshusername>@100.65.X.X
+
+Do note that  ssh -i privatekey.pem  will only give your private key to the destination, not to SSHJump. Please see this except from the man page of SSH
+
+     -J destination
+             Connect to the target host by first making a ssh connection
+             to the jump host described by destination and then
+             establishing a TCP forwarding to the ultimate destination
+             from there.  Multiple jump hops may be specified separated
+             by comma characters.  This is a shortcut to specify a
+             ProxyJump configuration directive.  Note that configuration
+             directives supplied on the command-line generally apply to
+             the destination host and not any specified jump hosts.  Use
+             ~/.ssh/config to specify configuration for jump hosts.
+
+Here is a example ~/.ssh/config to give a custom private key to ssh to use with SSHJump system
+
+```
+Host ssh.cyberrange.rit.edu
+    HostName ssh.cyberrange.rit.edu
+    User <ritusername>
+    Port 22
+    IdentityFile ~/customkey.pem
+```
+
+Also another trick is to have all of 100.65.0.0/16 go over the proxy, You can add this before the above to have it automatically proxy over SSHJump for you without having to give -J
+
+```
+Host 100.65.*
+    Port 22
+    IdentityFile ~/openstackkey.pem
+    ProxyJump ssh.cyberrange.rit.edu
+```
+
+One important note is that there is *no* client isolation on `SSHJumpNet`, which means that your machine, by default, will be able to communicate with any other machine on the network. This is not only a security risk (which will make people be disappointed in you) but could easily impact other users of the stack as well (which makes people angry at you.) The method to prevent this is to ensure that the security groups applied ONLY permit traffic from the jump host (`100.65.0.1`) over your SSH Port (TCP 22 by default) via the `SSHJumpNet` network. Any other `SSHJumpNet` traffic *must* be dropped. The rule that accomplishes this task is shown below:
+
+![Allowing SSH traffic via the jump host](https://raw.githubusercontent.com/gidoBOSSftw5731/Openstack-Guides/main/guide-images/sshjumpnet-01.png)
+
+Since Openstack does not have the ability to create DROP rules in security groups, you *must* ensure that you do not have any ingress rules to allow traffic from `0.0.0.0` through. It is much preferred that you only whitelist RIT's network (which is detailed below.)
+
+If you have a need to have a service open to the whole internet, you can set the Port Security Group on the port attached to `SSHJumpNet` separately. It's also desired that, if anything you are running has the ability to negatively affect other machines on the network, you specifically create a security group for that machine that only allows traffic from the jump host, including denying all egress traffic over the `SSHJumpNet` network. As Security Groups are stateful, there's no need to be concerned with Egress rules. 
+
+Common Errors
+
+- `<ritusername>@ssh.cyberrange.rit.edu: Permission denied (publickey)`
+
+    - This issue is causes by your username being wrong on the SSHJump host, or the Private Key was rejected, check all settings and resync your SSHJump keys
+
+- `<sshusername>@100.65.X.X: Permission denied (publickey).`
+
+    - Your VM Rejected your key. Please check your settings, Don't forget about the caveats with `ssh -i`
+
+- `channel 0: open failed: connect failed: No route to host or other connection type errors`
+
+    - Your VM is unable to be reached by SSHJump, Please check your network settings, and make sure your VM has picked up its SSHJumpNet IP. The Openstack dashboard only says if an IP address has been assigned, you must utilize the console if you want to verify if the VM actaully acquired an address.
+
+
 ### Getting the Openstack CLI
 
 _**All examples below are using Ubuntu 22.04**_
@@ -141,26 +209,3 @@ Once installed every time you log in to SSH you need to run `source ~/<projectna
 For details on how to use the CLI, Please see the Docs: [python-openstackclient](https://docs.openstack.org/python-openstackclient/latest/cli/index.html)
 
 For basic commands try `openstack server list` or `openstack server create --help`
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
