@@ -174,7 +174,6 @@ Common Errors
 
     - Your VM is unable to be reached by SSHJump, Please check your network settings, and make sure your VM has picked up its SSHJumpNet IP. The Openstack dashboard only says if an IP address has been assigned, you must utilize the console if you want to verify if the VM actaully acquired an address.
 
-
 ### Getting the Openstack CLI
 
 _**All examples below are using Ubuntu 22.04**_
@@ -209,3 +208,11 @@ Once installed every time you log in to SSH you need to run `source ~/<projectna
 For details on how to use the CLI, Please see the Docs: [python-openstackclient](https://docs.openstack.org/python-openstackclient/latest/cli/index.html)
 
 For basic commands try `openstack server list` or `openstack server create --help`
+
+
+### Creating a security group for all protocols
+
+While it's generally unwise to allow all ingress traffic via all protocols and ports, there may be reasons to do so. If you do need to do this, you can create a security group that allows all traffic via all protocols and ports. This is done by creating a security group selecting on the protocol of `-1` which Openstack sees as a wildcard. This is shown below. Note that this allows all protocols from *any address* which is almost never what you want. You should ***STRONGLY*** consider only whitelisting RIT's network (129.21.0.0/16) instead. 
+
+![Picture of allowing all protocols](https://raw.githubusercontent.com/gidoBOSSftw5731/Openstack-Guides/3215f1a42da9d587376ad272fdc904e356439026/guide-images/globalallowgroup-01.png)
+
